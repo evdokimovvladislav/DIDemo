@@ -1,6 +1,9 @@
 package com.example.didemo.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.didemo.domain.usecases.GetDogUseCase
 import kotlinx.coroutines.launch
 
@@ -34,21 +37,10 @@ class DogImageViewModel(private val getDogUseCase: GetDogUseCase) : ViewModel() 
      */
     fun updateDog() {
         viewModelScope.launch {
-            _imageUrl.value = getDogUseCase().message
-            _status.value = getDogUseCase().status
-        }
-    }
-
-    /**
-     * Фабрика для правильного создания DogImageViewModel
-     *
-     * @property getDogUseCase use case получения собаки
-     */
-    class Factory(private val getDogUseCase: GetDogUseCase) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return DogImageViewModel(getDogUseCase) as T
+            getDogUseCase().run {
+                _imageUrl.value = message
+                _status.value = status
+            }
         }
     }
 }
