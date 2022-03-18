@@ -1,7 +1,6 @@
 package com.example.didemo.data
 
 import com.example.didemo.data.network.DogApi
-import com.example.didemo.domain.models.Dog
 import com.example.didemo.domain.repository.Repository
 
 /**
@@ -11,5 +10,5 @@ import com.example.didemo.domain.repository.Repository
  */
 class RepositoryImpl(private val dogeApi: DogApi) : Repository {
 
-    override suspend fun getDog(): Dog = dogeApi.getDogInfo()
+    override suspend fun getDog() = dogeApi.getDogInfo()
 }

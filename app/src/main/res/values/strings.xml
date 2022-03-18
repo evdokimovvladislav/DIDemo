@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DIDemo</string>
+    <string name="button_text">Get</string>
+    <string name="dog_image_description">Dog Image</string>
 </resources>
