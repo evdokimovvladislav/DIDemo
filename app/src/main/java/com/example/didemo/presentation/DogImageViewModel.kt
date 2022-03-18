@@ -38,17 +38,4 @@ class DogImageViewModel(private val getDogUseCase: GetDogUseCase) : ViewModel() 
             _status.value = getDogUseCase().status
         }
     }
-
-    /**
-     * Фабрика для правильного создания DogImageViewModel
-     *
-     * @property getDogUseCase use case получения собаки
-     */
-    class Factory(private val getDogUseCase: GetDogUseCase) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return DogImageViewModel(getDogUseCase) as T
-        }
-    }
 }
