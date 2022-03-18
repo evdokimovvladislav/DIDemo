@@ -1,6 +1,9 @@
 package com.example.didemo.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.didemo.domain.usecases.GetDogUseCase
 import kotlinx.coroutines.launch
 
@@ -34,8 +37,10 @@ class DogImageViewModel(private val getDogUseCase: GetDogUseCase) : ViewModel() 
      */
     fun updateDog() {
         viewModelScope.launch {
-            _imageUrl.value = getDogUseCase().message
-            _status.value = getDogUseCase().status
+            getDogUseCase().run {
+                _imageUrl.value = message
+                _status.value = status
+            }
         }
     }
 }
