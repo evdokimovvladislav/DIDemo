@@ -1,21 +1,18 @@
 package com.example.didemo
 
 import android.app.Application
-import com.example.didemo.data.network.DogApi
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.didemo.di.AppComponent
+import com.example.didemo.di.DaggerAppComponent
 
 class MyApp : Application() {
 
-    private lateinit var retrofit: Retrofit
-    val dogApi: DogApi by lazy { retrofit.create(DogApi::class.java) }
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
 
-        retrofit = Retrofit.Builder()
-            .baseUrl(DogApi.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+        appComponent = DaggerAppComponent.builder()
+            .appContext(context = this)
             .build()
     }
 }
