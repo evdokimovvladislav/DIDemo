@@ -14,13 +14,10 @@ import retrofit2.create
 class DataModule {
 
     @Provides
-    fun provideDogApi(): DogApi {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(DogApi.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create()
-    }
+    fun provideDogApi() = Retrofit.Builder()
+        .baseUrl(DogApi.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build().create<DogApi>()
 }
 
 @Module
