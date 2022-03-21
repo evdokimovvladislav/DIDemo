@@ -3,6 +3,7 @@ package com.example.didemo.presentation
 import androidx.lifecycle.*
 import com.example.didemo.domain.usecases.GetDogUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * View Model для получения картинки и статуса из Dog
@@ -34,8 +35,10 @@ class DogImageViewModel(private val getDogUseCase: GetDogUseCase) : ViewModel() 
      */
     fun updateDog() {
         viewModelScope.launch {
-            _imageUrl.value = getDogUseCase().message
-            _status.value = getDogUseCase().status
+            getDogUseCase().run {
+                _imageUrl.value = message
+                _status.value = status
+            }
         }
     }
 
@@ -44,7 +47,7 @@ class DogImageViewModel(private val getDogUseCase: GetDogUseCase) : ViewModel() 
      *
      * @property getDogUseCase use case получения собаки
      */
-    class Factory(private val getDogUseCase: GetDogUseCase) : ViewModelProvider.Factory {
+    class Factory @Inject constructor(private val getDogUseCase: GetDogUseCase) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

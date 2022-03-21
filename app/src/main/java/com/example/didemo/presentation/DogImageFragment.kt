@@ -1,5 +1,6 @@
 package com.example.didemo.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.didemo.MyApp
-import com.example.didemo.data.RepositoryImpl
 import com.example.didemo.databinding.FragmentDogImageBinding
-import com.example.didemo.domain.repository.Repository
-import com.example.didemo.domain.usecases.GetDogUseCase
+import javax.inject.Inject
 
 class DogImageFragment : Fragment() {
 
@@ -19,7 +18,14 @@ class DogImageFragment : Fragment() {
     private val binding: FragmentDogImageBinding
         get() = checkNotNull(_binding)
 
+    @Inject
+    lateinit var factory: DogImageViewModel.Factory
     private lateinit var viewModel: DogImageViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApp).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +49,7 @@ class DogImageFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val repository: Repository = RepositoryImpl((requireActivity().application as MyApp).dogApi)
-        val useCase = GetDogUseCase(repository)
-
-        viewModel = ViewModelProvider(
-            this,
-            DogImageViewModel.Factory(useCase)
-        )[DogImageViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[DogImageViewModel::class.java]
     }
 
     private fun observeViwModel() {
